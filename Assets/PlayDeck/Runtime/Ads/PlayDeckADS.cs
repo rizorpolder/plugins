@@ -1,11 +1,10 @@
 using System;
 using System.Runtime.InteropServices;
-using PlayDeck.Runtime.Common;
 using UnityEngine;
 
 namespace PlayDeck.Runtime.Ads
 {
-	public class PlayDeckAds : PlayDeckCommon
+	public class PlayDeckAds
 	{
 		private Action<string> _rewardedAdCallback;
 		private Action<string> _errAdCallback;
@@ -35,25 +34,31 @@ namespace PlayDeck.Runtime.Ads
 
 		#region Responce
 
+		//called from js
 		private void RewardedAdHandler(string data)
 		{
 			_rewardedAdCallback?.Invoke(data);
 		}
 
+		//called from js
+
 		private void ErrAdHandler(string data)
 		{
 			_errAdCallback?.Invoke(data);
 		}
+		//called from js
 
 		private void SkipAdHandler(string data)
 		{
 			_skipAdCallback?.Invoke(data);
 		}
+		//called from js
 
 		private void NotFoundAdHandler(string data)
 		{
 			_notFoundAdCallback?.Invoke(data);
 		}
+		//called from js
 
 		private void StartAdHandler(string data)
 		{

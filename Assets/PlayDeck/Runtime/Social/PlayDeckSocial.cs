@@ -1,12 +1,11 @@
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Newtonsoft.Json;
-using PlayDeck.Runtime.Common;
 using UnityEngine;
 
 namespace PlayDeck.Runtime.Social
 {
-	public class PlayDeckSocial : PlayDeckCommon
+	public class PlayDeckSocial
 	{
 		private System.Action<string> _getShareLinkCallback;
 
@@ -32,15 +31,15 @@ namespace PlayDeck.Runtime.Social
 
 		public void OpenTelegramLink(string link)
 		{
-
-            Debug.Log($"[PlayDeckBridge]: OpenTelegramLink {link}");
-            PlayDeckBridge_PostMessage_OpenTelegramLink(link);
+			Debug.Log($"[PlayDeckBridge]: OpenTelegramLink {link}");
+			PlayDeckBridge_PostMessage_OpenTelegramLink(link);
 		}
 
 		#endregion
 
 		#region Response
 
+		//called from js
 		private void GetShareLinkHandler(string shareLink)
 		{
 			_getShareLinkCallback?.Invoke(shareLink);

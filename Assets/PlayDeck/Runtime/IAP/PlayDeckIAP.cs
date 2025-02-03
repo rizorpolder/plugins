@@ -1,11 +1,10 @@
 using System.Runtime.InteropServices;
 using Newtonsoft.Json;
-using PlayDeck.Runtime.Common;
 using UnityEngine;
 
 namespace PlayDeck.Runtime.IAP
 {
-	public class PlayDeckIAP : PlayDeckCommon
+	public class PlayDeckIAP
 	{
 		[DllImport("__Internal")]
 		private static extern void PlayDeckBridge_PostMessage_RequestPayment(string data);
@@ -17,6 +16,7 @@ namespace PlayDeck.Runtime.IAP
 		private System.Action<GetPaymentInfoResponseData> _getPaymentInfoRequestCallback;
 
 		#region Request
+
 		public void RequestPayment(PaymentRequestData requestData, System.Action<PaymentResponseData> callback)
 		{
 			_paymentRequestCallback = callback;
@@ -34,23 +34,25 @@ namespace PlayDeck.Runtime.IAP
 			Debug.Log($"[PlayDeckBridge]: GetPaymentInfo {json}");
 			PlayDeckBridge_PostMessage_GetPaymentInfo(json);
 		}
+
 		#endregion
 
-
-
-
 		#region Response
+
+		//called from js
 		public void InvoiceClosedHandler(string value)
 		{
 			Debug.LogAssertionFormat($"InvoiceClosed {value}");
 		}
 
+		//called from js
 		private void GetPaymentInfoHandler(string getPaymentInfoJson)
 		{
 			var converted = JsonConvert.DeserializeObject<GetPaymentInfoResponseData>(getPaymentInfoJson);
 			_getPaymentInfoRequestCallback?.Invoke(converted);
 		}
 
+		//called from js
 		private void RequestPaymentHandler(string paymentRequestJson)
 		{
 			var converted = JsonConvert.DeserializeObject<PaymentResponseData>(paymentRequestJson);

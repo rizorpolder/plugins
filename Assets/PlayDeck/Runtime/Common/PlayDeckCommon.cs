@@ -6,7 +6,7 @@ namespace PlayDeck.Runtime.Common
 {
 	public class PlayDeckCommon
 	{
-		public const string GET_USER_PROFILE = "getUserProfile";
+		private const string GET_USER_PROFILE = "getUserProfile";
 
 		private System.Action<UserData> _getUserCallback;
 		private System.Action<string> _getDataCallback;
@@ -38,31 +38,36 @@ namespace PlayDeck.Runtime.Common
 
 		public void GetPlaydeckState(System.Action<bool> callback)
 		{
+			Debug.Log($"[PlayDeckBridge]: GetPlaydeckState");
+			PlayDeckBridge_PostMessage_GetPlaydeckState();
 
-            Debug.Log($"[PlayDeckBridge]: GetPlaydeckState");
-            PlayDeckBridge_PostMessage_GetPlaydeckState();
-
-            _getPlaydeckStateCallback = callback;
+			_getPlaydeckStateCallback = callback;
 		}
 
 		#endregion
 
 		#region Response
 
+		//called from js
+
 		private void GetUserHandler(string userJson)
 		{
 			var converted = JsonConvert.DeserializeObject<UserData>(userJson);
 			_getUserCallback?.Invoke(converted);
 		}
+		//called from js
 
 		private void GetDataHandler(string dataJson)
 		{
 			_getDataCallback?.Invoke(dataJson);
 		}
+
+		//called from js
 		private void GetPlaydeckStateHandler(int state)
 		{
 			_getPlaydeckStateCallback?.Invoke(state != 0);
 		}
+
 		#endregion
 
 		#region NativeMethods

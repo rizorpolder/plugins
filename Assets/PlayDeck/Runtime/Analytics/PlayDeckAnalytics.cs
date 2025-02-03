@@ -1,11 +1,10 @@
 using System.Runtime.InteropServices;
 using Newtonsoft.Json;
-using PlayDeck.Runtime.Common;
 using UnityEngine;
 
 namespace PlayDeck.Runtime.Analytics
 {
-	public class PlayDeckAnalytics : PlayDeckCommon
+	public class PlayDeckAnalytics
 	{
 		#region Request
 
@@ -34,10 +33,6 @@ namespace PlayDeck.Runtime.Analytics
 			Debug.Log($"[PlayDeckBridge]: SendAnalytics {json}");
 			PlayDeckBridge_PostMessage_SendAnalytics(json);
 		}
-
-		#endregion
-
-		#region Responce
 
 		#endregion
 
