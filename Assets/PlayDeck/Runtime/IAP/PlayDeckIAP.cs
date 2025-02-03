@@ -1,10 +1,11 @@
 using System.Runtime.InteropServices;
-using IAP.Core.Runtime;
 using Newtonsoft.Json;
+using PlayDeck.Runtime.Common;
+using UnityEngine;
 
 namespace PlayDeck.Runtime.IAP
 {
-	public class PlayDeckIAP : IIAPService
+	public class PlayDeckIAP : PlayDeckCommon
 	{
 		[DllImport("__Internal")]
 		private static extern void PlayDeckBridge_PostMessage_RequestPayment(string data);
@@ -13,32 +14,49 @@ namespace PlayDeck.Runtime.IAP
 		private static extern void PlayDeckBridge_PostMessage_GetPaymentInfo(string data);
 
 		private System.Action<PaymentResponseData> _paymentRequestCallback;
+		private System.Action<GetPaymentInfoResponseData> _getPaymentInfoRequestCallback;
 
-
-
-		public bool IsPurchaseInProcess { get; }
-
-		public bool IsInitialized()
+		#region Request
+		public void RequestPayment(PaymentRequestData requestData, System.Action<PaymentResponseData> callback)
 		{
-			throw new System.NotImplementedException();
+			_paymentRequestCallback = callback;
+			var json = JsonConvert.SerializeObject(requestData);
+			Debug.Log($"[PlayDeckBridge]: RequestPayment {json}");
+			PlayDeckBridge_PostMessage_RequestPayment(json);
 		}
 
-		public void Purchase(string productId)
+		public void GetPaymentInfo(GetPaymentInfoRequestData requestData,
+			System.Action<GetPaymentInfoResponseData> callback)
 		{
-			throw new System.NotImplementedException();
+			_getPaymentInfoRequestCallback = callback;
+
+			var json = JsonConvert.SerializeObject(requestData);
+			Debug.Log($"[PlayDeckBridge]: GetPaymentInfo {json}");
+			PlayDeckBridge_PostMessage_GetPaymentInfo(json);
+		}
+		#endregion
+
+
+
+
+		#region Response
+		public void InvoiceClosedHandler(string value)
+		{
+			Debug.LogAssertionFormat($"InvoiceClosed {value}");
 		}
 
-		public void ConfirmPurchaseReceiving(string productId)
+		private void GetPaymentInfoHandler(string getPaymentInfoJson)
 		{
-			throw new System.NotImplementedException();
+			var converted = JsonConvert.DeserializeObject<GetPaymentInfoResponseData>(getPaymentInfoJson);
+			_getPaymentInfoRequestCallback?.Invoke(converted);
 		}
 
 		private void RequestPaymentHandler(string paymentRequestJson)
 		{
 			var converted = JsonConvert.DeserializeObject<PaymentResponseData>(paymentRequestJson);
-			_paymentResponseJson = converted;
 			_paymentRequestCallback?.Invoke(converted);
 		}
 
+		#endregion
 	}
 }

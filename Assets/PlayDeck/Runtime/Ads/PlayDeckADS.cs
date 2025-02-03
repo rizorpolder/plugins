@@ -1,19 +1,19 @@
 using System;
 using System.Runtime.InteropServices;
+using PlayDeck.Runtime.Common;
 using UnityEngine;
 
-namespace PlayDeck.Runtime.IAP
+namespace PlayDeck.Runtime.Ads
 {
 	public class PlayDeckAds : PlayDeckCommon
 	{
-		[DllImport("__Internal")]
-		private static extern void PlayDeckBridge_PostMessage_ShowAd();
-
 		private Action<string> _rewardedAdCallback;
 		private Action<string> _errAdCallback;
 		private Action<string> _skipAdCallback;
 		private Action<string> _notFoundAdCallback;
 		private Action<string> _startAdCallback;
+
+		#region Request
 
 		public void ShowAd(Action<string> rewardedAdCallback,
 			Action<string> errAdCallback,
@@ -31,7 +31,10 @@ namespace PlayDeck.Runtime.IAP
 			PlayDeckBridge_PostMessage_ShowAd();
 		}
 
-		//Response
+		#endregion
+
+		#region Responce
+
 		private void RewardedAdHandler(string data)
 		{
 			_rewardedAdCallback?.Invoke(data);
@@ -56,5 +59,14 @@ namespace PlayDeck.Runtime.IAP
 		{
 			_startAdCallback?.Invoke(data);
 		}
+
+		#endregion
+
+		#region NativeMethods
+
+		[DllImport("__Internal")]
+		private static extern void PlayDeckBridge_PostMessage_ShowAd();
+
+		#endregion
 	}
 }
