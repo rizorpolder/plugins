@@ -1,0 +1,9 @@
+{
+  "name": "com.flbrd.social.playdeck",
+  "displayName": "PlayDeck Integration",
+  "version": "1.0.0",
+  "description": "PlayDeck social integrations on game.",
+  "author": {
+    "name": "Flappy Bird Publishing"
+  }
+}

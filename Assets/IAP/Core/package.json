@@ -1,9 +1,0 @@
-{
-  "name": "com.flbrd.IAP.core",
-  "displayName": "IAP PlayDeck",
-  "version": "1.0.0",
-  "description": "In app purchase core.",
-  "author": {
-    "name": "Flappy Bird Publishing"
-  }
-}

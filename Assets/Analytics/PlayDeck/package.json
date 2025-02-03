@@ -1,0 +1,9 @@
+{
+  "name": "com.flbrd.analytics.playdeck",
+  "displayName": "PlayDeck Integration",
+  "version": "1.0.0",
+  "description": "PlayDeck analytics integrations.",
+  "author": {
+    "name": "Flappy Bird Publishing"
+  }
+}
